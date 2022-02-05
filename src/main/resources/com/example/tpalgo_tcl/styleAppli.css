@@ -1,0 +1,9 @@
+
+.layout {
+    -fx-background-color: white;
+}
+
+
+.bold-label {
+    -fx-font-weight: bold;
+}

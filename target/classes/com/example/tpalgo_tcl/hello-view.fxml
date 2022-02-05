@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?scenebuilder-stylesheet styleAppli.css?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="507.0" prefWidth="505.0" styleClass="layout" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tpalgo_tcl.HelloController">
+    <children>
+        <ImageView fx:id="ivPlan" fitHeight="500.0" fitWidth="350" layoutX="50" layoutY="20" pickOnBounds="true" preserveRatio="true">
+        </ImageView>
+        <ComboBox fx:id="comboDepart" layoutX="53.0" layoutY="509.0" prefHeight="26.0" prefWidth="152" promptText="départ" />
+        <Label id="selectorDepart" layoutX="100.0" layoutY="472.0" prefHeight="26.0" prefWidth="38.0" styleClass="bold-label" text="départ" />
+            <ComboBox fx:id="comboArrivee" layoutX="290.0" layoutY="509.0" prefHeight="26.0" prefWidth="152.0" promptText="arrivée" />
+        <Label id="selectorArrivee" layoutX="335.0" layoutY="480.0" styleClass="bold-label" text="arrivée" />
+        <Button fx:id="btnRechercher" layoutX="208.0" layoutY="545.0" mnemonicParsing="false" text="Rechercher" onAction="#btnRechercherAction"/>
+       <Label fx:id="result" layoutX="50.0" layoutY="600.0" text="Le trajet apparaitra ici"/>
+    </children>
+
+
+    <stylesheets>
+        <URL value="@styleAppli.css" />
+    </stylesheets>
+</AnchorPane>

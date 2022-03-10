@@ -1,9 +1,9 @@
-module com.example.tpalgo_tcl {
+module com.playout.tpfinalalgo {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
 
-    requires org.kordamp.bootstrapfx.core;
 
-    opens com.example.tpalgo_tcl to javafx.fxml;
-    exports com.example.tpalgo_tcl;
+    opens com.playout.tpfinalalgo to javafx.fxml;
+    exports com.playout.tpfinalalgo;
 }

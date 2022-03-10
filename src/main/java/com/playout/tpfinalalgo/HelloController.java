@@ -1,10 +1,4 @@
-/**
- * @author Marion Playout
- */
-
-
-package com.example.tpalgo_tcl;
-
+package com.playout.tpfinalalgo;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -31,7 +25,6 @@ public class HelloController implements Initializable {
 
     StringProperty valuePropertyProf = new SimpleStringProperty();
     StringProperty valuePropertyDijkstra = new SimpleStringProperty();
-    StringProperty valuePropertyGareDepart = new SimpleStringProperty();
 
 
     @FXML
@@ -47,8 +40,6 @@ public class HelloController implements Initializable {
 
     @FXML
     private Label resultDijkstra;
-    @FXML
-    private Label labelGareDeDepart;
 
 
     @FXML
@@ -61,7 +52,6 @@ public class HelloController implements Initializable {
         if (arrivee == null) {
             System.out.println("pas de gare d'arrivée selectionnée!");
         }
-        valuePropertyGareDepart.setValue("Gare de départ : " + depart.getName());
 
         Dijkstra.setWaysWithDijkstra(stationsTCL, depart);
         Long startTime = System.nanoTime();
@@ -77,6 +67,7 @@ public class HelloController implements Initializable {
 
 
         List<Dijkstra> reverseway = new ArrayList<>();
+        reverseway.add(arrivee);
         startTime = System.nanoTime();
         depart.determineTheWayInfixeMode(reverseway, arrivee);
         String wayInfixe = Dijkstra.getTheWayForTheLabel(reverseway);
@@ -85,7 +76,6 @@ public class HelloController implements Initializable {
         String parcoursLongueur = wayInfixe.concat(tempsExecLongueur);
 
         valuePropertyProf.setValue(parcoursLongueur);
-        labelGareDeDepart.textProperty().bind(valuePropertyGareDepart);
         resultProfondeur.textProperty().bind(valuePropertyProf);
         resultDijkstra.textProperty().bind(valuePropertyDijkstra);
 
@@ -95,7 +85,11 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        File file = new File("src/main/resources/images/planMetroTCL.png");
+
+        //pour générer le .jar
+        // Image image = new Image(this.getClass().getResource("/planMetroTCL.png").toString());
+        //pour executer en local
+        File file = new File("src/main/resources/com/playout/tpfinalalgo/images/planMetroTCL.png");
         Image image = new Image(file.toURI().toString());
         ivPlan.setImage(image);
 
@@ -113,4 +107,3 @@ public class HelloController implements Initializable {
 
     }
 }
-

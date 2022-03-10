@@ -1,1 +1,1 @@
-moduleSearchIndex = [{"l":"com.example.tpalgo_tcl"}];updateSearchResults();
+moduleSearchIndex = [{"l":"com.playout.tpfinalalgo"}];updateSearchResults();

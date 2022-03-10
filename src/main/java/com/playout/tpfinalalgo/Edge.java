@@ -3,7 +3,7 @@
  */
 
 
-package com.example.tpalgo_tcl;
+package com.playout.tpfinalalgo;
 
 public class Edge {
     private double weight;

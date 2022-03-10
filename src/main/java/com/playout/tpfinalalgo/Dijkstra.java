@@ -2,13 +2,12 @@
  * @author Marion Playout
  */
 
-package com.example.tpalgo_tcl;
+package com.playout.tpfinalalgo;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Dijkstra {
@@ -252,6 +251,9 @@ public class Dijkstra {
         while (currentNode.getDistanceFromSource() != 0) {
             revertedPath.add(currentNode);
             currentNode = currentNode.getBestParentFromSource();
+        }
+        if(currentNode.getDistanceFromSource()==0){
+            revertedPath.add(currentNode);
         }
 
         return revertedPath;

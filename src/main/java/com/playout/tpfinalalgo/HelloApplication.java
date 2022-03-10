@@ -1,9 +1,8 @@
+package com.playout.tpfinalalgo;
+
 /**
  * @author Marion Playout
  */
-
-
-package com.example.tpalgo_tcl;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

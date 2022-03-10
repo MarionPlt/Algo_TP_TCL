@@ -1,3 +1,8 @@
+/**
+ * @author Marion Playout
+ */
+
+
 package com.example.tpalgo_tcl;
 
 
@@ -22,7 +27,7 @@ public class HelloController implements Initializable {
 
     List<Dijkstra> stationsTCL = Dijkstra.getReseauTCL();
     Map<String, Dijkstra> stationsMap = new HashMap<>();
-    ObservableList<String> stationsTclNames = FXCollections.observableArrayList(stationsTCL.stream().map(Dijkstra::getName).collect(Collectors.toList()));
+    ObservableList<String> stationsTclNames = FXCollections.observableArrayList(stationsTCL.stream().map(Dijkstra::getName).sorted().collect(Collectors.toList()));
 
     StringProperty valuePropertyProf = new SimpleStringProperty();
     StringProperty valuePropertyDijkstra = new SimpleStringProperty();
@@ -59,24 +64,33 @@ public class HelloController implements Initializable {
         valuePropertyGareDepart.setValue("Gare de départ : " + depart.getName());
 
         Dijkstra.setWaysWithDijkstra(stationsTCL, depart);
-        String wayDijkstra = Dijkstra.getTheWayForTheLabel(Dijkstra.getTheQuickestWayWithDijkstra(arrivee), false);
-        valuePropertyDijkstra.setValue(wayDijkstra);
+        Long startTime = System.nanoTime();
+        String wayDijkstra = Dijkstra.getTheWayForTheLabel(Dijkstra.getTheQuickestWayWithDijkstra(arrivee));
+        Long stopTime = System.nanoTime();
+        String tempsExecDijkstra = "\n temps d'exécution : ".concat(((Long) (stopTime - startTime)).toString()).concat("ns");
+        String parcoursDijsktra = wayDijkstra.concat(tempsExecDijkstra);
 
-        //après chaque opération de calcul d'itinéraire, remettre à false le parametre isVisited pour toutes les stations
-        stationsTCL.forEach(d -> d.setVisited(false));
+        valuePropertyDijkstra.setValue(parcoursDijsktra);
+
+        //après chaque opération de calcul d'itinéraire, remettre les stations aux paramètres initiaux
+        Dijkstra.resetStationsParameters(stationsTCL);
+
 
         List<Dijkstra> reverseway = new ArrayList<>();
+        startTime = System.nanoTime();
         depart.determineTheWayInfixeMode(reverseway, arrivee);
-        String wayInfixe = Dijkstra.getTheWayForTheLabel(reverseway, true);
-        valuePropertyProf.setValue(wayInfixe);
+        String wayInfixe = Dijkstra.getTheWayForTheLabel(reverseway);
+        stopTime = System.nanoTime();
+        String tempsExecLongueur = "\n temps d'exécution : ".concat(((Long) (stopTime - startTime)).toString()).concat("ns");
+        String parcoursLongueur = wayInfixe.concat(tempsExecLongueur);
 
-        //après chaque opération de calcul d'itinéraire, remettre à false le parametre isVisited pour toutes les stations
-        stationsTCL.forEach(d -> d.setVisited(false));
-
+        valuePropertyProf.setValue(parcoursLongueur);
         labelGareDeDepart.textProperty().bind(valuePropertyGareDepart);
         resultProfondeur.textProperty().bind(valuePropertyProf);
         resultDijkstra.textProperty().bind(valuePropertyDijkstra);
 
+        //après les deux calculs, remettre les stations aux paramètres initiaux
+        Dijkstra.resetStationsParameters(stationsTCL);
     }
 
     @Override
@@ -90,7 +104,7 @@ public class HelloController implements Initializable {
             stationsMap.putIfAbsent(d.getName(), d);
         }
 
-        // get the list of the stations
+        // récupère la liste des noms de stations du réseau TCL
         comboDepart.setItems(stationsTclNames);
         comboArrivee.setItems(stationsTclNames);
 

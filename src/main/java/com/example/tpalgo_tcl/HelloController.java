@@ -15,12 +15,19 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HelloController implements Initializable {
 
-    ObservableList<String> stationsTcl = FXCollections.observableArrayList(Graph.getReseauTCL().stream().map(Graph::getName).collect(Collectors.toList()));
+    List<Dijkstra> stationsTCL = Dijkstra.getReseauTCL();
+    Map<String, Dijkstra> stationsMap = new HashMap<>();
+    ObservableList<String> stationsTclNames = FXCollections.observableArrayList(stationsTCL.stream().map(Dijkstra::getName).collect(Collectors.toList()));
+
+    StringProperty valuePropertyProf = new SimpleStringProperty();
+    StringProperty valuePropertyDijkstra = new SimpleStringProperty();
+    StringProperty valuePropertyGareDepart = new SimpleStringProperty();
+
 
     @FXML
     private ComboBox comboDepart;
@@ -31,17 +38,46 @@ public class HelloController implements Initializable {
     @FXML
     private ImageView ivPlan;
     @FXML
-    private Label result;
-    @FXML
-    private void btnRechercherAction (ActionEvent event){
+    private Label resultProfondeur;
 
+    @FXML
+    private Label resultDijkstra;
+    @FXML
+    private Label labelGareDeDepart;
+
+
+    @FXML
+    private void btnRechercherAction(ActionEvent event) {
+        Dijkstra depart = stationsMap.get(comboDepart.getValue());
+        if (depart == null) {
+            System.out.println("pas de gare de depart selectionnée!");
+        }
+        Dijkstra arrivee = stationsMap.get(comboArrivee.getValue());
+        if (arrivee == null) {
+            System.out.println("pas de gare d'arrivée selectionnée!");
+        }
+        valuePropertyGareDepart.setValue("Gare de départ : " + depart.getName());
+
+        Dijkstra.setWaysWithDijkstra(stationsTCL, depart);
+        String wayDijkstra = Dijkstra.getTheWayForTheLabel(Dijkstra.getTheQuickestWayWithDijkstra(arrivee), false);
+        valuePropertyDijkstra.setValue(wayDijkstra);
+
+        //après chaque opération de calcul d'itinéraire, remettre à false le parametre isVisited pour toutes les stations
+        stationsTCL.forEach(d -> d.setVisited(false));
+
+        List<Dijkstra> reverseway = new ArrayList<>();
+        depart.determineTheWayInfixeMode(reverseway, arrivee);
+        String wayInfixe = Dijkstra.getTheWayForTheLabel(reverseway, true);
+        valuePropertyProf.setValue(wayInfixe);
+
+        //après chaque opération de calcul d'itinéraire, remettre à false le parametre isVisited pour toutes les stations
+        stationsTCL.forEach(d -> d.setVisited(false));
+
+        labelGareDeDepart.textProperty().bind(valuePropertyGareDepart);
+        resultProfondeur.textProperty().bind(valuePropertyProf);
+        resultDijkstra.textProperty().bind(valuePropertyDijkstra);
 
     }
-
-    private StringProperty trajet = new SimpleStringProperty("");
-
-
-
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -49,23 +85,18 @@ public class HelloController implements Initializable {
         Image image = new Image(file.toURI().toString());
         ivPlan.setImage(image);
 
-        result.textProperty().bind(trajet);
+
+        for (Dijkstra d : stationsTCL) {
+            stationsMap.putIfAbsent(d.getName(), d);
+        }
 
         // get the list of the stations
-        comboDepart.setItems(stationsTcl);
-        comboArrivee.setItems(stationsTcl);
+        comboDepart.setItems(stationsTclNames);
+        comboArrivee.setItems(stationsTclNames);
 
-        //comboDepart.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        resultDijkstra.textProperty().bind(new SimpleStringProperty(""));
+        resultProfondeur.textProperty().bind(new SimpleStringProperty(""));
 
-
-    }
-
-    public ObservableList<String> getStationsTcl() {
-        return stationsTcl;
-    }
-
-    public void setStationsTcl(ObservableList<String> stationsTcl) {
-        this.stationsTcl = stationsTcl;
     }
 }
 

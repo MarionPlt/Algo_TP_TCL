@@ -14,7 +14,7 @@ public class HelloApplication extends Application {
 
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 500, 750);
+        Scene scene = new Scene(fxmlLoader.load(), 750, 750);
         stage.setTitle("Parcours sur le reseau TCL");
         stage.setScene(scene);
         stage.show();

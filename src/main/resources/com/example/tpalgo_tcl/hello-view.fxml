@@ -1,23 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?scenebuilder-stylesheet styleAppli.css?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="507.0" prefWidth="505.0" styleClass="layout" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tpalgo_tcl.HelloController">
+<AnchorPane maxHeight="750.0" maxWidth="750.0" minHeight="750.0" minWidth="750.0" prefHeight="750.0" prefWidth="750.0" styleClass="layout" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tpalgo_tcl.HelloController">
     <children>
-        <ImageView fx:id="ivPlan" fitHeight="500.0" fitWidth="350" layoutX="50" layoutY="20" pickOnBounds="true" preserveRatio="true">
-        </ImageView>
-        <ComboBox fx:id="comboDepart" layoutX="53.0" layoutY="509.0" prefHeight="26.0" prefWidth="152" promptText="départ" />
-        <Label id="selectorDepart" layoutX="100.0" layoutY="472.0" prefHeight="26.0" prefWidth="38.0" styleClass="bold-label" text="départ" />
-            <ComboBox fx:id="comboArrivee" layoutX="290.0" layoutY="509.0" prefHeight="26.0" prefWidth="152.0" promptText="arrivée" />
-        <Label id="selectorArrivee" layoutX="335.0" layoutY="480.0" styleClass="bold-label" text="arrivée" />
-        <Button fx:id="btnRechercher" layoutX="208.0" layoutY="545.0" mnemonicParsing="false" text="Rechercher" onAction="#btnRechercherAction"/>
-       <Label fx:id="result" layoutX="50.0" layoutY="600.0" text="Le trajet apparaitra ici"/>
-    </children>
 
+        <Pane prefHeight="523.0" prefWidth="750.0" AnchorPane.bottomAnchor="227.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <ImageView fx:id="ivPlan" fitHeight="501.0" fitWidth="453.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/planMetroTCL.png" />
+                    </image>
+                </ImageView>
+                <VBox layoutX="523.0" layoutY="56.0" prefHeight="126.0" prefWidth="229.0">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="212.0" text="Départ" textAlignment="CENTER">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <ComboBox fx:id="comboDepart" prefHeight="33.0" prefWidth="202.0" />
+                    </children>
+                </VBox>
+                <VBox layoutX="521.0" layoutY="182.0" prefHeight="189.0" prefWidth="229.0">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="212.0" text="Arrivée" textAlignment="CENTER">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="comboArrivee" prefHeight="37.0" prefWidth="202.0">
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </ComboBox>
+                        <HBox prefHeight="79.0" prefWidth="230.0">
+                            <children>
+                                <Button fx:id="btnRechercher" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnRechercherAction" prefHeight="44.0" prefWidth="106.0" text="Rechercher" textAlignment="CENTER">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="50.0" top="20.0" />
+                                    </HBox.margin>
+                                </Button>
+                            </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </Pane>
+        <FlowPane layoutY="521.0" prefHeight="231.0" prefWidth="750.0">
+            <children>
+                <Label fx:id="labelGareDeDepart" layoutX="50.0" layoutY="600.0" text="La gare de départ : ">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+                </Label>
+                <Label fx:id="txtresultDijkstra" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="750.0" text="Itinéraire avec un parcours Dijsktra : ">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+            <Label fx:id="resultDijkstra" layoutX="10.0" layoutY="50.0" prefHeight="30.0" prefWidth="750.0" text="Le trajet Dijkstra apparaitra ici">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <FlowPane.margin>
+                  <Insets top="10.0" />
+               </FlowPane.margin>
+            </Label>
+            <Label fx:id="txtresultProfondeur1" prefHeight="30.0" prefWidth="750.0" text="Itinéraire avec un parcours en profondeur : ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="resultProfondeur" prefHeight="30.0" prefWidth="750.0" text="Le trajet profondeur apparaitra ici">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            </children>
+        </FlowPane>
+    </children>
 
     <stylesheets>
         <URL value="@styleAppli.css" />

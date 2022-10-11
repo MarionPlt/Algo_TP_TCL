@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -18,20 +17,21 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class HelloController implements Initializable {
-
-    List<Dijkstra> stationsTCL = Dijkstra.getReseauTCL();
+    //La liste de stations et la liste de noms de stations sont immutables grâce au mot clé "final"
+    final List<Dijkstra> stationsTCL = Dijkstra.getReseauTCL();
     Map<String, Dijkstra> stationsMap = new HashMap<>();
-    ObservableList<String> stationsTclNames = FXCollections.observableArrayList(stationsTCL.stream().map(Dijkstra::getName).sorted().collect(Collectors.toList()));
+    //Utilisation d'une fonction d'ordre supérieur (map)
+    final ObservableList<String> stationsTclNames = FXCollections.observableArrayList(stationsTCL.stream().map(Dijkstra::getName).sorted().collect(Collectors.toList()));
 
     StringProperty valuePropertyProf = new SimpleStringProperty();
     StringProperty valuePropertyDijkstra = new SimpleStringProperty();
 
 
     @FXML
-    private ComboBox comboDepart;
+    private ComboBox<String> comboDepart;
 
     @FXML
-    private ComboBox comboArrivee;
+    private ComboBox<String> comboArrivee;
 
     @FXML
     private ImageView ivPlan;
@@ -41,9 +41,11 @@ public class HelloController implements Initializable {
     @FXML
     private Label resultDijkstra;
 
-
+    /**
+     * Procédure lorsqu'on appuie sur le bouton "Rechercher"
+     */
     @FXML
-    private void btnRechercherAction(ActionEvent event) {
+    private void btnRechercherAction() {
         Dijkstra depart = stationsMap.get(comboDepart.getValue());
         if (depart == null) {
             System.out.println("pas de gare de depart selectionnée!");
@@ -53,10 +55,10 @@ public class HelloController implements Initializable {
             System.out.println("pas de gare d'arrivée selectionnée!");
         }
 
-        Dijkstra.setWaysWithDijkstra(stationsTCL, depart);
-        Long startTime = System.nanoTime();
+        Dijkstra.setWaysWithDijkstra(stationsTCL, Objects.requireNonNull(depart));
+        long startTime = System.nanoTime();
         String wayDijkstra = Dijkstra.getTheWayForTheLabel(Dijkstra.getTheQuickestWayWithDijkstra(arrivee));
-        Long stopTime = System.nanoTime();
+        long stopTime = System.nanoTime();
         String tempsExecDijkstra = "\n temps d'exécution : ".concat(((Long) (stopTime - startTime)).toString()).concat("ns");
         String parcoursDijsktra = wayDijkstra.concat(tempsExecDijkstra);
 
@@ -69,11 +71,11 @@ public class HelloController implements Initializable {
         List<Dijkstra> reverseway = new ArrayList<>();
         reverseway.add(arrivee);
         startTime = System.nanoTime();
-        depart.determineTheWayInfixeMode(reverseway, arrivee);
+        depart.determineTheWayInfixeMode(reverseway, Objects.requireNonNull(arrivee));
         String wayInfixe = Dijkstra.getTheWayForTheLabel(reverseway);
         stopTime = System.nanoTime();
-        String tempsExecLongueur = "\n temps d'exécution : ".concat(((Long) (stopTime - startTime)).toString()).concat("ns");
-        String parcoursLongueur = wayInfixe.concat(tempsExecLongueur);
+        final String tempsExecLongueur = "\n temps d'exécution : ".concat(((Long) (stopTime - startTime)).toString()).concat("ns");
+        final String parcoursLongueur = wayInfixe.concat(tempsExecLongueur);
 
         valuePropertyProf.setValue(parcoursLongueur);
         resultProfondeur.textProperty().bind(valuePropertyProf);

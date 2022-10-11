@@ -47,39 +47,50 @@ public class HelloController implements Initializable {
     @FXML
     private void btnRechercherAction() {
         Dijkstra depart = stationsMap.get(comboDepart.getValue());
-        if (depart == null) {
-            System.out.println("pas de gare de depart selectionnée!");
-        }
         Dijkstra arrivee = stationsMap.get(comboArrivee.getValue());
-        if (arrivee == null) {
-            System.out.println("pas de gare d'arrivée selectionnée!");
+
+        if (depart == null) {
+            valuePropertyDijkstra.setValue("pas de gare de depart selectionnée!");
+            if (arrivee == null) {
+                valuePropertyProf.setValue("pas de gare d'arrivée selectionnée!");
+            } else {
+                valuePropertyProf.setValue("");
+            }
+
+        } else if (arrivee == null) {
+            valuePropertyProf.setValue("pas de gare d'arrivée selectionnée!");
+            valuePropertyDijkstra.setValue("");
+
+        } else {
+            //Parcours de Dijsktra
+            Dijkstra.setWaysWithDijkstra(stationsTCL, Objects.requireNonNull(depart));
+            long startTime = System.nanoTime();
+            String wayDijkstra = Dijkstra.getTheWayForTheLabel(Dijkstra.getTheQuickestWayWithDijkstra(arrivee));
+            long stopTime = System.nanoTime();
+            String tempsExecDijkstra = "\n Temps d'exécution : ".concat(((Long) (stopTime - startTime)).toString()).concat("ns");
+            String parcoursDijsktra = wayDijkstra.concat(tempsExecDijkstra);
+
+            valuePropertyDijkstra.setValue(parcoursDijsktra);
+
+            //après chaque opération de calcul d'itinéraire, remettre les stations aux paramètres initiaux
+            Dijkstra.resetStationsParameters(stationsTCL);
+
+            //Parcours en profondeur
+            List<Dijkstra> reverseway = new ArrayList<>();
+            reverseway.add(arrivee);
+            startTime = System.nanoTime();
+            depart.determineTheWayInfixeMode(reverseway, Objects.requireNonNull(arrivee));
+            String wayInfixe = Dijkstra.getTheWayForTheLabel(reverseway);
+            stopTime = System.nanoTime();
+            final String tempsExecLongueur = "\n Temps d'exécution : ".concat(((Long) (stopTime - startTime)).toString()).concat("ns");
+            final String parcoursLongueur = wayInfixe.concat(tempsExecLongueur);
+
+            valuePropertyProf.setValue(parcoursLongueur);
         }
 
-        Dijkstra.setWaysWithDijkstra(stationsTCL, Objects.requireNonNull(depart));
-        long startTime = System.nanoTime();
-        String wayDijkstra = Dijkstra.getTheWayForTheLabel(Dijkstra.getTheQuickestWayWithDijkstra(arrivee));
-        long stopTime = System.nanoTime();
-        String tempsExecDijkstra = "\n temps d'exécution : ".concat(((Long) (stopTime - startTime)).toString()).concat("ns");
-        String parcoursDijsktra = wayDijkstra.concat(tempsExecDijkstra);
-
-        valuePropertyDijkstra.setValue(parcoursDijsktra);
-
-        //après chaque opération de calcul d'itinéraire, remettre les stations aux paramètres initiaux
-        Dijkstra.resetStationsParameters(stationsTCL);
-
-
-        List<Dijkstra> reverseway = new ArrayList<>();
-        reverseway.add(arrivee);
-        startTime = System.nanoTime();
-        depart.determineTheWayInfixeMode(reverseway, Objects.requireNonNull(arrivee));
-        String wayInfixe = Dijkstra.getTheWayForTheLabel(reverseway);
-        stopTime = System.nanoTime();
-        final String tempsExecLongueur = "\n temps d'exécution : ".concat(((Long) (stopTime - startTime)).toString()).concat("ns");
-        final String parcoursLongueur = wayInfixe.concat(tempsExecLongueur);
-
-        valuePropertyProf.setValue(parcoursLongueur);
         resultProfondeur.textProperty().bind(valuePropertyProf);
         resultDijkstra.textProperty().bind(valuePropertyDijkstra);
+
 
         //après les deux calculs, remettre les stations aux paramètres initiaux
         Dijkstra.resetStationsParameters(stationsTCL);

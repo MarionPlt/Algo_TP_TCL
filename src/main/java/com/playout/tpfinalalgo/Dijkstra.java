@@ -1,5 +1,5 @@
-/**
- * @author Marion Playout
+/*
+  @author Marion Playout
  */
 
 package com.playout.tpfinalalgo;
@@ -58,8 +58,8 @@ public class Dijkstra {
         this.children = children;
     }
 
-    public boolean isVisited() {
-        return visited;
+    public boolean isNotVisited() {
+        return !visited;
     }
 
     public void setVisited(boolean visited) {
@@ -189,7 +189,7 @@ public class Dijkstra {
 
     /**
      * Donne le chemin entre deux stations a partir d'un parcours en profondeur infixe
-     * Fonction omnipotente
+     * Fonction idempotente
      * @param arrivee     station d'arrivee (Dijkstra)
      * @param reversedWay liste de stations (Dijkstra)
      * @return liste de stations (Dijsktra)
@@ -198,7 +198,7 @@ public class Dijkstra {
     public boolean determineTheWayInfixeMode(List<Dijkstra> reversedWay, Dijkstra arrivee) {
         if (this.getId() == arrivee.getId()) {
             return true;
-        } else if (!isVisited()) {
+        } else if (isNotVisited()) {
             setVisited(true);
             if (getChildren() != null) {
                 for (Edge g : getChildren()) {
@@ -215,7 +215,7 @@ public class Dijkstra {
 
     /**
      * Procedure qui determine la longueur des chemins par algorithme de Dijkstra
-     *
+     * Utilise une fonction d'ordre superieur (map) et de fonctions anonymes
      * @param listNodes   : liste de stations
      * @param currentNode :station de depart (Dijsktra)
      */
@@ -232,7 +232,7 @@ public class Dijkstra {
 
                 }
             }
-            List<Dijkstra> unVisitedNodes = listNodes.stream().filter(n -> !n.isVisited()).collect(Collectors.toList());
+            List<Dijkstra> unVisitedNodes = listNodes.stream().filter(Dijkstra::isNotVisited).collect(Collectors.toList());
             if (unVisitedNodes.isEmpty()) {
                 currentNode = null;
             } else {
@@ -245,7 +245,7 @@ public class Dijkstra {
 
     /**
      * Calcule le chemin le plus court pour aller d'un point a un autre
-     * Fonction omnipotente
+     * Fonction idempotente
      * @return le chemin de stations a parcourir (liste)
      */
     public static List<Dijkstra> getTheQuickestWayWithDijkstra(Dijkstra arrivee) {
@@ -264,7 +264,7 @@ public class Dijkstra {
 
     /**
      * Regroupe tous les noms de stations en une seule string
-     * Fonction omnipotente
+     * Fonction idempotente
      * Utilise une fonction d'ordre superieur (map) et de fonction anonyme
      * @param way :liste d'objets Dijkstra
      * @return une chaine de caracteres (string)

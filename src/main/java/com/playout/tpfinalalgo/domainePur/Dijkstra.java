@@ -2,7 +2,7 @@
   @author Marion Playout
  */
 
-package com.playout.tpfinalalgo;
+package com.playout.tpfinalalgo.domainePur;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Dijkstra {
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
     private List<Edge> children;
     private boolean visited;
     private double distanceFromSource; //distance optimale de la source au noeud Dijsktra
@@ -38,17 +38,11 @@ public class Dijkstra {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<Edge> getChildren() {
         return children;

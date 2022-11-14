@@ -5,5 +5,7 @@ module com.playout.tpfinalalgo {
 
 
     opens com.playout.tpfinalalgo to javafx.fxml;
+    exports com.playout.tpfinalalgo.domainePur;
+    opens com.playout.tpfinalalgo.domainePur to javafx.fxml;
     exports com.playout.tpfinalalgo;
 }

@@ -1,5 +1,6 @@
 package com.playout.tpfinalalgo;
 
+import com.playout.tpfinalalgo.domainePur.Dijkstra;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;

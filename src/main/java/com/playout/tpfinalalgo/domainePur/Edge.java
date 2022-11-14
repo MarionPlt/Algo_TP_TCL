@@ -3,8 +3,8 @@
  */
 
 
-package com.playout.tpfinalalgo;
-
+package com.playout.tpfinalalgo.domainePur;
+//Composition over inheritance
 public class Edge {
     private double weight;
     private Dijkstra destination;

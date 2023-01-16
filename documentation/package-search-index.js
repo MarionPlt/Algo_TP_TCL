@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.playout.tpfinalalgo","l":"com.playout.tpfinalalgo"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.playout.tpfinalalgo","l":"com.playout.tpfinalalgo"},{"m":"com.playout.tpfinalalgo","l":"com.playout.tpfinalalgo.domainePur"}];updateSearchResults();

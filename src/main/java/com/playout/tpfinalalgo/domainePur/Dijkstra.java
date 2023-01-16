@@ -271,7 +271,7 @@ public class Dijkstra {
     }
 
     /**
-     * Procedure : permet les stations a leurs parametres par defaut
+     * Procedure : permet de remettre les stations a leurs parametres par defaut
      *
      * @param stations liste de stations (Dijkstra)
      */
